@@ -89,7 +89,33 @@ exports.createCollege = async function(req, res) {
         
     }
 
+    
+
  
 
 
-  
+  exports.practice=async function(req,res){
+    let asb=req.body
+
+    let ssf=await collegeModel.create(asb)
+    res.send({status:true,data:ssf})
+  }
+
+  const prac=async function(req,res){
+    let sd=req.query.collegeName
+
+    let fi=await collegeModel.findOne({name:sd}).select({name:1,fullName:1,logoLink:1})
+
+    let fi2=await internModel.find({collegeId:collegeId._id}).select({name:1,email:1,mobile:1})
+     let final={name:fi.name,fullName:fi.fullName,logoLink:fi.logoLink}
+
+
+     if(fi2.length==0){
+     let data={...final,inter:"no applied"}
+     return res.send({status:false,msg:data})}
+
+
+     let sd2={...final,intern:fi2}
+
+     res.send({status:true,data:sd2})
+  }
